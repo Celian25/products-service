@@ -1,0 +1,14 @@
+name: "products-service"
+
+services:
+  backend:
+    container_name: backend
+    build:
+      context: ../..
+      dockerfile: docker/local/api.Dockerfile
+    volumes:
+      - ../..:/app
+    environment:
+      TZ: Europe/Moscow
+    ports:
+      - "8081:8081"

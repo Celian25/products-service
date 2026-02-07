@@ -1,0 +1,22 @@
+scalar Time
+
+extend type Query {
+    productsByFilters(
+        after: Cursor,
+        first: Int,
+        before: Cursor,
+        last: Int,
+        where: ProductWhereInput
+    ) : ProductConnection!
+}
+
+type Mutation {
+    createCategory(input: CreateCategoryInput!): Category!
+    createProduct(input: CreateProductInput!): Product!
+    createFilter(input: CreateFilterInput!): Filter!
+    createFilterType(input: CreateFilterTypeInput!): FilterType!
+    updateCategory(id: ID!, input: UpdateCategoryInput!): Category!
+    updateProduct(id: ID!, input: UpdateProductInput!): Product!
+    updateFilter(id: ID!, input: UpdateFilterInput!): Filter!
+    updateFilterType(id: ID!, input: UpdateFilterTypeInput!): FilterType!
+}

@@ -41,12 +41,12 @@ func main() {
 	go func() {
 		logger.Info("server started", "port", 8081)
 		if err := server.ListenAndServe(); err != nil {
-			log.Fatal("http server terminated", err)
+			logger.Error("failed starting server", "error", err)
 		}
 	}()
 	<-stop
 
-	logger.Error("server shutting down")
+	logger.Info("server shutting down")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -54,5 +54,5 @@ func main() {
 	if err := server.Shutdown(ctx); err != nil {
 		log.Fatal(err)
 	}
-	logger.Error("server exited")
+	logger.Info("server exited")
 }

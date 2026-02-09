@@ -3,16 +3,15 @@ package main
 import (
 	"context"
 	"log"
+	"log/slog"
 	"net/http"
+	"os"
+	"os/signal"
 	"product-backend/ent"
 	"product-backend/ent/migrate"
 	"product-backend/internal/graphql"
-	"product-backend/internal/mw"
+	"time"
 
-	"github.com/99designs/gqlgen/graphql/handler"
-	"github.com/99designs/gqlgen/graphql/handler/extension"
-	"github.com/99designs/gqlgen/graphql/handler/transport"
-	"github.com/99designs/gqlgen/graphql/playground"
 	_ "github.com/mattn/go-sqlite3"
 )
 
@@ -27,18 +26,33 @@ func main() {
 		log.Fatalf("failed migrating schema: %v", err)
 	}
 
-	mux := http.NewServeMux()
-	srv := handler.New(graphql.NewSchema(client))
-	srv.AddTransport(transport.POST{})
-	srv.Use(extension.Introspection{})
+	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 
-	corsSrv := mw.CORSMiddleware(srv)
-	mux.Handle("/",
-		playground.Handler("Products API", "/graphql"),
-	)
-	mux.Handle("/graphql", corsSrv)
-	log.Println("listening on :8081")
-	if err := http.ListenAndServe(":8081", mux); err != nil {
-		log.Fatal("http server terminated", err)
+	mux := graphql.New(client, logger)
+
+	server := &http.Server{
+		Addr:    ":8081",
+		Handler: mux,
 	}
+
+	stop := make(chan os.Signal)
+	signal.Notify(stop, os.Interrupt)
+
+	go func() {
+		logger.Info("server started", "port", 8081)
+		if err := server.ListenAndServe(); err != nil {
+			log.Fatal("http server terminated", err)
+		}
+	}()
+	<-stop
+
+	logger.Error("server shutting down")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	if err := server.Shutdown(ctx); err != nil {
+		log.Fatal(err)
+	}
+	logger.Error("server exited")
 }

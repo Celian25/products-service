@@ -1,7 +1,7 @@
 <template>
   <UModal>
     <UButton
-      label="Поиск товаров..."
+      label="Поиск продукта..."
       color="neutral"
       variant="subtle"
       icon="i-lucide-search"
@@ -11,7 +11,7 @@
       <UCommandPalette
         v-model:search-term="searchTerm"
         :groups="groups"
-        placeholder="Поиск товаров..."
+        placeholder="Поиск продукта..."
         class="h-80"
       />
     </template>

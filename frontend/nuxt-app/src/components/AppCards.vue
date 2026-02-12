@@ -1,7 +1,8 @@
 <template>
+  <div class="">{{ title }}</div>
   <UBlogPosts>
     <UPageCard
-      v-for="{ title, description, icon, to, img } in cardProps"
+      v-for="{ title, description, icon, to, img } in items"
       :title="title"
       :description="description"
       :icon="icon"
@@ -13,32 +14,23 @@
       <template #header>
         <img :src="img" alt="Tailwind CSS" class="w-full" />
       </template>
+      <template #footer>
+        <div>2222</div>
+      </template>
     </UPageCard>
   </UBlogPosts>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { PageCard } from "../types/types";
 // import { User, UserRole } from "@/types/user";
 // import type { User, UserRole } from "@/types/user";
 
-const cardProps = [
-  {
-    title: "Dashboard1",
-    description:
-      "Nuxt UI integrates with latest Tailwind CSS, bringing significant improvements.",
-    to: "/not-found",
-    icon: "i-heroicons-home",
-    img: "src/assets/imgs/img-placeholder.png",
-  },
-  {
-    title: "Dashboard2",
-    description: "Go to dashboard",
-    to: "/not-found",
-    icon: "i-heroicons-home",
-    img: "src/assets/imgs/img-placeholder.png",
-  },
-];
+const props = defineProps<{
+  title: string;
+  items: PageCard[];
+}>();
 </script>
 
 <style scoped></style>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <UPage class="my-5">
+    <UPage>
       <UBreadcrumb :items="breadcrumb" />
       <UInputMenu
         placeholder="Поиск по продуктам..."
@@ -14,29 +14,29 @@
         <template #empty>Ничего не найдено &#128532</template>
       </UInputMenu>
 
-      <USeparator class="my-5" />
-      <app-cards title="Продукты" :items="cardProps" />
+      <USeparator />
+      <app-cards :items="cardProps" />
     </UPage>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { PageCard } from "../types/types";
+import { PageCard } from "@/types/types";
 import type { BreadcrumbItem } from '@nuxt/ui'
 
 const breadcrumb = ref<BreadcrumbItem[]>([
   {
-    label: 'Категории',
-    icon: 'i-lucide-book-open',
-    to: '/'
+    label: "Категории",
+    icon: "i-heroicons-squares-2x2",
+    to: "/",
   },
   {
-    label: 'Название категории',
-    icon: 'i-lucide-box',
-    to: '/products-slug'
+    label: "Название категории",
+    icon: "i-heroicons-folder",
+    to: "/products-slug",
   },
-])
+]);
 
 const items = ref([
   "Продукт1",

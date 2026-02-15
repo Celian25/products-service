@@ -1,6 +1,7 @@
 <template>
   <div>
-    <UPage class="my-5">
+    <UPage>
+      <UBreadcrumb :items="breadcrumb" />
       <UInputMenu
         placeholder="Поиск по категории..."
         :items="items"
@@ -12,19 +13,26 @@
       >
         <template #empty>Ничего не найдено &#128532</template>
       </UInputMenu>
-      <app-filters />
       <USeparator class="my-5" />
-      <app-cards title="Категории" :items="cardProps" />
+      <app-cards :items="cardProps" />
     </UPage>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
-import AppCards from "../components/AppCards.vue";
-import AppFilters from "../components/AppFilters.vue";
-import { PageCard } from "../types/types";
+import type { BreadcrumbItem } from '@nuxt/ui'
+import AppCards from "@/components/AppCards.vue";
+import { PageCard } from "@/types/types";
 // import AppCategories from "../components/AppCategories.vue";
+
+const breadcrumb = ref<BreadcrumbItem[]>([
+  {
+    label: "Категории",
+    icon: "i-heroicons-squares-2x2",
+    to: "/",
+  },
+]);
 
 const items = ref([
   "Категория 1",

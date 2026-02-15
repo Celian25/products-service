@@ -1,11 +1,9 @@
 <template>
-  <div class="">{{ title }}</div>
   <UBlogPosts>
     <UPageCard
-      v-for="{ title, description, icon, to, img } in items"
+      v-for="{ title, description, to, img } in items"
       :title="title"
       :description="description"
-      :icon="icon"
       :to="to"
       orientation="vertical"
       spotlight
@@ -15,7 +13,7 @@
         <img :src="img" alt="Tailwind CSS" class="w-full" />
       </template>
       <template #footer>
-        <div>2222</div>
+        <div>{{ formatCurrency(2222) }}</div>
       </template>
     </UPageCard>
   </UBlogPosts>
@@ -23,12 +21,12 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { PageCard } from "../types/types";
+import { PageCard } from "@/types/types";
+import { formatCurrency } from "@/utils/currency";
 // import { User, UserRole } from "@/types/user";
 // import type { User, UserRole } from "@/types/user";
 
 const props = defineProps<{
-  title: string;
   items: PageCard[];
 }>();
 </script>
